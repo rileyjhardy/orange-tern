@@ -1,0 +1,2 @@
+module PrayerCirclesHelper
+end

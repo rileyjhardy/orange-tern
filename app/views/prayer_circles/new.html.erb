@@ -1,0 +1,11 @@
+<% content_for :title, "New prayer circle" %>
+
+<h1>New prayer circle</h1>
+
+<%= render "form", prayer_circle: @prayer_circle %>
+
+<br>
+
+<div>
+  <%= link_to "Back to prayer circles", prayer_circles_path %>
+</div>

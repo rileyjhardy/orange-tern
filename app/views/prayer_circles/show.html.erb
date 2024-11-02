@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @prayer_circle %>
+
+<div>
+  <%= link_to "Edit this prayer circle", edit_prayer_circle_path(@prayer_circle) %> |
+  <%= link_to "Back to prayer circles", prayer_circles_path %>
+
+  <%= button_to "Destroy this prayer circle", @prayer_circle, method: :delete %>
+</div>

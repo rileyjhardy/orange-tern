@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Prayer circles" %>
+
+<h1>Prayer circles</h1>
+
+<div id="prayer_circles">
+  <% @prayer_circles.each do |prayer_circle| %>
+    <%= render prayer_circle %>
+    <p>
+      <%= link_to "Show this prayer circle", prayer_circle %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New prayer circle", new_prayer_circle_path %>
