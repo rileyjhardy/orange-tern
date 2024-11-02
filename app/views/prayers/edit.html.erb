@@ -1,0 +1,12 @@
+<% content_for :title, "Editing prayer" %>
+
+<h1>Editing prayer</h1>
+
+<%= render "form", prayer: @prayer %>
+
+<br>
+
+<div>
+  <%= link_to "Show this prayer", @prayer %> |
+  <%= link_to "Back to prayers", prayers_path %>
+</div>
