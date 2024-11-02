@@ -14,8 +14,7 @@ export default class extends Controller {
   setupTimer() {
     const svg = this.timerTarget
     const radius = 100
-    const circumference = 2 * Math.PI * radius
-    const center = 110 // Slightly larger than radius to account for stroke width
+    const center = 110
     
     // Clear existing content
     svg.innerHTML = ''
@@ -25,9 +24,7 @@ export default class extends Controller {
     backgroundCircle.setAttribute("cx", center)
     backgroundCircle.setAttribute("cy", center)
     backgroundCircle.setAttribute("r", radius)
-    backgroundCircle.setAttribute("fill", "none")
-    backgroundCircle.setAttribute("stroke", "#eee")
-    backgroundCircle.setAttribute("stroke-width", "10")
+    backgroundCircle.classList.add('prayer-timer__background')
     svg.appendChild(backgroundCircle)
     
     // Create segments for each prayer
@@ -37,7 +34,8 @@ export default class extends Controller {
       const endAngle = startAngle + (percentage * 360)
       
       const segment = this.createSegment(center, radius, startAngle, endAngle)
-      segment.setAttribute("stroke", `hsl(${(index * 360) / this.prayersValue.length}, 70%, 50%)`)
+      segment.classList.add('prayer-timer__segment')
+      segment.style.stroke = `hsl(${(index * 360) / this.prayersValue.length}, 70%, 50%)`
       svg.appendChild(segment)
       
       startAngle = endAngle
@@ -47,10 +45,7 @@ export default class extends Controller {
     this.progressMarker = document.createElementNS("http://www.w3.org/2000/svg", "circle")
     this.progressMarker.setAttribute("cx", center)
     this.progressMarker.setAttribute("cy", center - radius)
-    this.progressMarker.setAttribute("r", "5")
-    this.progressMarker.setAttribute("fill", "white")
-    this.progressMarker.setAttribute("stroke", "black")
-    this.progressMarker.setAttribute("stroke-width", "2")
+    this.progressMarker.classList.add('prayer-timer__progress-marker')
     svg.appendChild(this.progressMarker)
     
     this.startTimer()

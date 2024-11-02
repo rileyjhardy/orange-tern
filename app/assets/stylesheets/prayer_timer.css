@@ -1,0 +1,29 @@
+:root {
+  --prayer-timer-size: 220px;
+  --prayer-timer-stroke-width: 10px;
+  --prayer-timer-marker-size: 5px;
+  --prayer-timer-background-color: #eee;
+}
+
+.prayer-timer {
+  width: var(--prayer-timer-size);
+  height: var(--prayer-timer-size);
+}
+
+.prayer-timer__background {
+  stroke: var(--prayer-timer-background-color);
+  stroke-width: var(--prayer-timer-stroke-width);
+  fill: none;
+}
+
+.prayer-timer__segment {
+  fill: none;
+  stroke-width: var(--prayer-timer-stroke-width);
+}
+
+.prayer-timer__progress-marker {
+  r: var(--prayer-timer-marker-size);
+  fill: white;
+  stroke: black;
+  stroke-width: 2;
+} 
