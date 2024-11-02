@@ -82,11 +82,31 @@ export default class extends Controller {
 
   startTimer() {
     let startTime = Date.now()
+    let currentSegmentIndex = -1  // Track which segment we're currently in
     
     const animate = () => {
       const elapsed = (Date.now() - startTime) / 1000
       const percentage = (elapsed % this.totalDurationValue) / this.totalDurationValue
       const angle = percentage * 360
+      
+      // Calculate which segment we're in
+      let elapsedTime = (elapsed % this.totalDurationValue)
+      let accumulatedTime = 0
+      let newSegmentIndex = 0
+      
+      for (let i = 0; i < this.prayersValue.length; i++) {
+        accumulatedTime += this.prayersValue[i].duration
+        if (elapsedTime <= accumulatedTime) {
+          newSegmentIndex = i
+          break
+        }
+      }
+      
+      // Log when we enter a new segment
+      if (newSegmentIndex !== currentSegmentIndex) {
+        currentSegmentIndex = newSegmentIndex
+        console.log(`Entering segment ${currentSegmentIndex + 1} - Prayer duration: ${this.prayersValue[currentSegmentIndex].duration}s`)
+      }
       
       const center = 110
       const radius = 100
