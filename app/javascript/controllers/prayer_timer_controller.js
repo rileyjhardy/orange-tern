@@ -82,41 +82,53 @@ export default class extends Controller {
 
   startTimer() {
     let startTime = Date.now()
-    let currentSegmentIndex = -1  // Track which segment we're currently in
+    let currentSegmentIndex = -1
+    let hasCompleted = false
     
     const animate = () => {
       const elapsed = (Date.now() - startTime) / 1000
-      const percentage = (elapsed % this.totalDurationValue) / this.totalDurationValue
-      const angle = percentage * 360
       
-      // Calculate which segment we're in
-      let elapsedTime = (elapsed % this.totalDurationValue)
-      let accumulatedTime = 0
-      let newSegmentIndex = 0
+      // Check if we've completed one full cycle
+      if (elapsed >= this.totalDurationValue && !hasCompleted) {
+        hasCompleted = true
+        console.log("Prayer cycle completed!")
+        return // Stop the animation
+      }
       
-      for (let i = 0; i < this.prayersValue.length; i++) {
-        accumulatedTime += this.prayersValue[i].duration
-        if (elapsedTime <= accumulatedTime) {
-          newSegmentIndex = i
-          break
+      // Only continue animation if we haven't completed
+      if (!hasCompleted) {
+        const percentage = elapsed / this.totalDurationValue
+        const angle = percentage * 360
+        
+        // Calculate which segment we're in
+        let elapsedTime = elapsed
+        let accumulatedTime = 0
+        let newSegmentIndex = 0
+        
+        for (let i = 0; i < this.prayersValue.length; i++) {
+          accumulatedTime += this.prayersValue[i].duration
+          if (elapsedTime <= accumulatedTime) {
+            newSegmentIndex = i
+            break
+          }
         }
+        
+        // Log when we enter a new segment
+        if (newSegmentIndex !== currentSegmentIndex) {
+          currentSegmentIndex = newSegmentIndex
+          console.log(`Entering segment ${currentSegmentIndex + 1} - Prayer duration: ${this.prayersValue[currentSegmentIndex].duration}s`)
+        }
+        
+        const center = 110
+        const radius = 100
+        const x = center + radius * Math.cos((angle - 90) * Math.PI / 180)
+        const y = center + radius * Math.sin((angle - 90) * Math.PI / 180)
+        
+        this.progressMarker.setAttribute("cx", x)
+        this.progressMarker.setAttribute("cy", y)
+        
+        requestAnimationFrame(animate)
       }
-      
-      // Log when we enter a new segment
-      if (newSegmentIndex !== currentSegmentIndex) {
-        currentSegmentIndex = newSegmentIndex
-        console.log(`Entering segment ${currentSegmentIndex + 1} - Prayer duration: ${this.prayersValue[currentSegmentIndex].duration}s`)
-      }
-      
-      const center = 110
-      const radius = 100
-      const x = center + radius * Math.cos((angle - 90) * Math.PI / 180)
-      const y = center + radius * Math.sin((angle - 90) * Math.PI / 180)
-      
-      this.progressMarker.setAttribute("cx", x)
-      this.progressMarker.setAttribute("cy", y)
-      
-      requestAnimationFrame(animate)
     }
     
     requestAnimationFrame(animate)
