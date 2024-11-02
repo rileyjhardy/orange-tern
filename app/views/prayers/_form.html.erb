@@ -1,4 +1,4 @@
-<%= form_with(model: prayer) do |form| %>
+<%= form_with(model: [@prayer_circle, prayer]) do |form| %>
   <% if prayer.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(prayer.errors.count, "error") %> prohibited this prayer from being saved:</h2>
@@ -24,11 +24,6 @@
   <div>
     <%= form.label :duration, style: "display: block" %>
     <%= form.number_field :duration %>
-  </div>
-
-  <div>
-    <%= form.label :prayer_circle_id, style: "display: block" %>
-    <%= form.text_field :prayer_circle_id %>
   </div>
 
   <div>

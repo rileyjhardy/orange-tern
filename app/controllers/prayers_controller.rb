@@ -1,9 +1,15 @@
 class PrayersController < ApplicationController
+  before_action :set_prayer_circle
   before_action :set_prayer, only: %i[ show edit update destroy ]
+
+
+  def set_prayer_circle
+    @prayer_circle = PrayerCircle.find(params.fetch(:prayer_circle_id))
+  end
 
   # GET /prayers or /prayers.json
   def index
-    @prayers = Prayer.all
+    @prayers = @prayer_circle.prayers
   end
 
   # GET /prayers/1 or /prayers/1.json
@@ -12,7 +18,7 @@ class PrayersController < ApplicationController
 
   # GET /prayers/new
   def new
-    @prayer = Prayer.new
+    @prayer = @prayer_circle.prayers.build
   end
 
   # GET /prayers/1/edit
@@ -21,11 +27,11 @@ class PrayersController < ApplicationController
 
   # POST /prayers or /prayers.json
   def create
-    @prayer = Prayer.new(prayer_params)
+    @prayer = @prayer_circle.prayers.build(prayer_params)
 
     respond_to do |format|
       if @prayer.save
-        format.html { redirect_to @prayer, notice: "Prayer was successfully created." }
+        format.html { redirect_to prayer_circle_prayers_path(@prayer_circle), notice: "Prayer was successfully created." }
         format.json { render :show, status: :created, location: @prayer }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +44,7 @@ class PrayersController < ApplicationController
   def update
     respond_to do |format|
       if @prayer.update(prayer_params)
-        format.html { redirect_to @prayer, notice: "Prayer was successfully updated." }
+        format.html { redirect_to prayer_circle_prayers_path(@prayer_circle), notice: "Prayer was successfully updated." }
         format.json { render :show, status: :ok, location: @prayer }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +58,7 @@ class PrayersController < ApplicationController
     @prayer.destroy!
 
     respond_to do |format|
-      format.html { redirect_to prayers_path, status: :see_other, notice: "Prayer was successfully destroyed." }
+      format.html { redirect_to prayer_circle_prayers_path(@prayer_circle), status: :see_other, notice: "Prayer was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -60,7 +66,7 @@ class PrayersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_prayer
-      @prayer = Prayer.find(params.expect(:id))
+      @prayer = @prayer_circle.prayers.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

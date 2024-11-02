@@ -8,9 +8,9 @@
   <% @prayers.each do |prayer| %>
     <%= render prayer %>
     <p>
-      <%= link_to "Show this prayer", prayer %>
+      <%= link_to "Show this prayer", prayer_circle_prayer_path(@prayer_circle, prayer) %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New prayer", new_prayer_path %>
+<%= link_to "New prayer", new_prayer_circle_prayer_path(@prayer_circle) %>

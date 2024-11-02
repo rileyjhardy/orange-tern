@@ -7,6 +7,6 @@
 <br>
 
 <div>
-  <%= link_to "Show this prayer", @prayer %> |
-  <%= link_to "Back to prayers", prayers_path %>
+  <%= link_to "Show this prayer", prayer_circle_prayer_path(@prayer_circle, @prayer) %> |
+  <%= link_to "Back to prayers", prayer_circle_prayers_path(@prayer_circle) %>
 </div>
