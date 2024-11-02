@@ -2,15 +2,25 @@
 
 <% content_for :title, "Prayers" %>
 
-<h1>Prayers</h1>
+<div data-controller="prayer-timer"
+     data-prayer-timer-prayers-value="<%= @prayers.map { |p| { duration: p.duration } }.to_json %>"
+     data-prayer-timer-total-duration-value="<%= @prayers.sum(&:duration) %>">
+  
+  <svg data-prayer-timer-target="timer"
+       width="220"
+       height="220"
+       viewBox="0 0 220 220">
+  </svg>
+  
+  <div id="prayers">
+    <% @prayers.each do |prayer| %>
+      <%= render prayer %>
+      <p>
+        <%= link_to "Show this prayer", prayer_circle_prayer_path(@prayer_circle, prayer) %>
+      </p>
+    <% end %>
+  </div>
 
-<div id="prayers">
-  <% @prayers.each do |prayer| %>
-    <%= render prayer %>
-    <p>
-      <%= link_to "Show this prayer", prayer_circle_prayer_path(@prayer_circle, prayer) %>
-    </p>
-  <% end %>
+  <%= link_to "New prayer", new_prayer_circle_prayer_path(@prayer_circle) %>
 </div>
 
-<%= link_to "New prayer", new_prayer_circle_prayer_path(@prayer_circle) %>
