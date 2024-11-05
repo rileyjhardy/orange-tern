@@ -1,3 +1,5 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+
 :root {
   --prayer-timer-size: 220px;
   --prayer-timer-stroke-width: 10px;

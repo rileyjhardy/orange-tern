@@ -2,10 +2,18 @@
 
 <% content_for :title, "Prayers" %>
 
-<div data-controller="prayer-timer"
+<div data-controller="prayer-timer prayer-audio"
+     data-action="prayer-timer:newSegment->prayer-audio#playSegment"
      data-prayer-timer-prayers-value="<%= @prayers.map { |p| { duration: p.duration } }.to_json %>"
+     data-prayer-audio-prayers-value="<%= @prayers.map { |p| { audio_url: p.prompt.attached? ? url_for(p.prompt) : nil } }.to_json %>"
      data-prayer-timer-total-duration-value="<%= @prayers.sum(&:duration) %>">
   
+  <button data-prayer-timer-target="startButton"
+          data-action="prayer-timer#start"
+          class="button">
+    Start
+  </button>
+
   <svg data-prayer-timer-target="timer"
        class="prayer-timer"
        viewBox="0 0 220 220">
@@ -17,6 +25,10 @@
       <p>
         <%= link_to "Show this prayer", prayer_circle_prayer_path(@prayer_circle, prayer) %>
       </p>
+
+      <% if prayer.prompt.attached? %>
+        <%= audio_tag url_for(prayer.prompt), controls: true %>
+      <% end %>
     <% end %>
   </div>
 

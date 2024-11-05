@@ -1,10 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["timer"]
+  static targets = ["timer", "startButton"]
   static values = {
     prayers: Array,
-    totalDuration: Number
+    totalDuration: Number,
+    isPlaying: { type: Boolean, default: false }
   }
 
   connect() {
@@ -48,7 +49,9 @@ export default class extends Controller {
     this.progressMarker.classList.add('prayer-timer__progress-marker')
     svg.appendChild(this.progressMarker)
     
-    this.startTimer()
+    // Position marker at starting position
+    this.progressMarker.setAttribute("cx", center)
+    this.progressMarker.setAttribute("cy", center - radius)
   }
 
   createSegment(center, radius, startAngle, endAngle) {
@@ -72,6 +75,18 @@ export default class extends Controller {
     return {
       x: centerX + (radius * Math.cos(angleInRadians)),
       y: centerY + (radius * Math.sin(angleInRadians))
+    }
+  }
+
+  start() {
+    if (!this.isPlayingValue) {
+      this.isPlayingValue = true
+      this.startButtonTarget.textContent = "Pause"
+      this.startTimer()
+    } else {
+      this.isPlayingValue = false
+      this.startButtonTarget.textContent = "Resume"
+      // You could add pause functionality here if desired
     }
   }
 
@@ -111,7 +126,10 @@ export default class extends Controller {
         // Log when we enter a new segment
         if (newSegmentIndex !== currentSegmentIndex) {
           currentSegmentIndex = newSegmentIndex
-          console.log(`Entering segment ${currentSegmentIndex + 1} - Prayer duration: ${this.prayersValue[currentSegmentIndex].duration}s`)
+          console.log(`Entering segment ${currentSegmentIndex + 1}`)
+          
+          // Dispatch event for audio controller
+          this.dispatch("newSegment", { detail: { segmentIndex: currentSegmentIndex } })
         }
         
         const center = 110
